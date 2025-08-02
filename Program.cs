@@ -1,4 +1,6 @@
+using BlogApi.Data;
 using BlogApi.Middleware;
+using Microsoft.EntityFrameworkCore;
 using Slugify;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Подключаем EF
+builder.Services.AddDbContext<BlogDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 // Подключаем SlugHelper
