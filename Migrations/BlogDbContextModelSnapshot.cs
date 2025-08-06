@@ -113,6 +113,30 @@ namespace BlogApi.Migrations
                     b.ToTable("CommentReports");
                 });
 
+            modelBuilder.Entity("BlogApi.Models.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId", "PostId")
+                        .IsUnique();
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("BlogApi.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -150,6 +174,9 @@ namespace BlogApi.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewCount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -193,21 +220,6 @@ namespace BlogApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("PostReports");
-                });
-
-            modelBuilder.Entity("BlogApi.Models.PostTag", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PostId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("PostTags");
                 });
 
             modelBuilder.Entity("BlogApi.Models.Reason", b =>
@@ -331,7 +343,7 @@ namespace BlogApi.Migrations
                     b.HasOne("BlogApi.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Post");
@@ -342,7 +354,7 @@ namespace BlogApi.Migrations
             modelBuilder.Entity("BlogApi.Models.CommentReport", b =>
                 {
                     b.HasOne("BlogApi.Models.Comment", "Comment")
-                        .WithMany()
+                        .WithMany("CommentReports")
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -354,14 +366,33 @@ namespace BlogApi.Migrations
                         .IsRequired();
 
                     b.HasOne("BlogApi.Models.User", "User")
-                        .WithMany()
+                        .WithMany("CommentReports")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Comment");
 
                     b.Navigation("Reason");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BlogApi.Models.Like", b =>
+                {
+                    b.HasOne("BlogApi.Models.Post", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogApi.Models.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });
@@ -388,7 +419,7 @@ namespace BlogApi.Migrations
             modelBuilder.Entity("BlogApi.Models.PostReport", b =>
                 {
                     b.HasOne("BlogApi.Models.Post", "Post")
-                        .WithMany()
+                        .WithMany("PostReports")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -400,9 +431,9 @@ namespace BlogApi.Migrations
                         .IsRequired();
 
                     b.HasOne("BlogApi.Models.User", "User")
-                        .WithMany()
+                        .WithMany("PostReports")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Post");
@@ -410,25 +441,6 @@ namespace BlogApi.Migrations
                     b.Navigation("Reason");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BlogApi.Models.PostTag", b =>
-                {
-                    b.HasOne("BlogApi.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlogApi.Models.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("PostTag", b =>
@@ -451,9 +463,18 @@ namespace BlogApi.Migrations
                     b.Navigation("Posts");
                 });
 
+            modelBuilder.Entity("BlogApi.Models.Comment", b =>
+                {
+                    b.Navigation("CommentReports");
+                });
+
             modelBuilder.Entity("BlogApi.Models.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+
+                    b.Navigation("PostReports");
                 });
 
             modelBuilder.Entity("BlogApi.Models.Reason", b =>
@@ -465,7 +486,13 @@ namespace BlogApi.Migrations
 
             modelBuilder.Entity("BlogApi.Models.User", b =>
                 {
+                    b.Navigation("CommentReports");
+
                     b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+
+                    b.Navigation("PostReports");
 
                     b.Navigation("Posts");
                 });

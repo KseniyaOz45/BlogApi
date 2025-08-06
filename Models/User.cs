@@ -13,5 +13,8 @@
         public DateTime? UpdatedAt { get; set; }
         public ICollection<Post> Posts { get; set; } = new List<Post>();
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public ICollection<Like> Likes { get; set; } = new List<Like>();
+        public ICollection<PostReport> PostReports { get; set; } = new List<PostReport>();
+        public ICollection<CommentReport> CommentReports { get; set; } = new List<CommentReport>();
     }
 }

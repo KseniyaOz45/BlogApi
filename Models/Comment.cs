@@ -9,5 +9,6 @@
         public User User { get; set; }
         public int PostId { get; set; }
         public Post Post { get; set; }
+        public ICollection<CommentReport> CommentReports { get; set; } = new List<CommentReport>();
     }
 }
