@@ -54,7 +54,7 @@ namespace BlogApi.Repositories
                 .Include(p => p.Tags)
                 .Include(p => p.Comments)
                 .Include(p => p.Likes)
-                .Where(p => p.User.Login == userLogin && p.IsPublished == isPublished)
+                .Where(p => p.User.UserName == userLogin && p.IsPublished == isPublished)
                 .ToListAsync();
         }
 
@@ -66,7 +66,7 @@ namespace BlogApi.Repositories
                 .Include(p => p.Tags)
                 .Include(p => p.Comments)
                 .Include(p => p.Likes)
-                .Where(p => p.User.Login == userLogin && (p.Title.Contains(searchValue) || p.Content.Contains(searchValue)))
+                .Where(p => p.User.UserName == userLogin && (p.Title.Contains(searchValue) || p.Content.Contains(searchValue)))
                 .ToListAsync();
         }
 
@@ -78,7 +78,7 @@ namespace BlogApi.Repositories
                 .Include(p => p.Tags)
                 .Include(p => p.Comments)
                 .Include(p => p.Likes)
-                .Where(p => p.User.Login == userLogin)
+                .Where(p => p.User.UserName == userLogin)
                 .ToListAsync();
         }
 
@@ -127,6 +127,18 @@ namespace BlogApi.Repositories
                 .Include(p => p.Comments)
                 .Include(p => p.Likes)
                 .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<IEnumerable<Post>> GetPostsByTagsAsync(List<int> tagIds)
+        {
+            return await _dbSet
+                .Include(p => p.User)
+                .Include(p => p.Category)
+                .Include(p => p.Tags)
+                .Include(p => p.Comments)
+                .Include(p => p.Likes)
+                .Where(p => p.Tags.Any(t => tagIds.Contains(t.Id)))
+                .ToListAsync();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace BlogApi.Repositories
                 .Include(pr => pr.Post)
                 .Include(pr => pr.User)
                 .Include(pr => pr.Reason)
-                .Where(report => report.User.Login == userLogin)
+                .Where(report => report.User.UserName == userLogin)
                 .ToListAsync();
         }
 
@@ -46,7 +46,7 @@ namespace BlogApi.Repositories
                 .Include(pr => pr.Post)
                 .Include(pr => pr.User)
                 .Include(pr => pr.Reason)
-                .FirstOrDefaultAsync(report => report.Post.Slug == postSlug && report.User.Login == userLogin);
+                .FirstOrDefaultAsync(report => report.Post.Slug == postSlug && report.User.UserName == userLogin);
         }
 
         public override async Task<IEnumerable<PostReport>> GetAllAsync()

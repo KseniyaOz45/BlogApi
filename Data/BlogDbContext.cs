@@ -1,9 +1,11 @@
 ﻿using BlogApi.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogApi.Data
 {
-    public class BlogDbContext : DbContext
+    public class BlogDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public BlogDbContext(DbContextOptions<BlogDbContext> options)
             : base(options)
@@ -17,7 +19,6 @@ namespace BlogApi.Data
         public DbSet<PostReport> PostReports { get; set; }
         public DbSet<Reason> Reasons { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

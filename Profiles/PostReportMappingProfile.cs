@@ -10,7 +10,7 @@ namespace BlogApi.Profiles
             CreateMap<PostReport, PostReportResponseDto>()
                 .ForMember(dest => dest.PostTitle, opt => opt.MapFrom(pr => pr.Post.Title))
                 .ForMember(dest => dest.ReasonName, opt => opt.MapFrom(pr => pr.Reason.Name))
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(pr => pr.User.Login));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(pr => pr.User.UserName));
 
             CreateMap<PostReportCreateDto, PostReport>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())

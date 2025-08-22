@@ -9,7 +9,7 @@ namespace BlogApi.Profiles
         public LikeMappingProfile() {
             CreateMap<Like, LikeResponseDto>()
                 .ForMember(dest => dest.PostTitle, opt => opt.MapFrom(l => l.Post != null ? l.Post.Title : "Undefined"))
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(l => l.User != null ? l.User.Login : "Undefined"));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(l => l.User != null ? l.User.UserName : "Undefined"));
 
             CreateMap<LikeCreateDto, Like>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())

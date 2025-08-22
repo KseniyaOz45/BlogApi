@@ -7,9 +7,9 @@ namespace BlogApi.Profiles
     public class CommentReportMappingProfile : Profile
     {
         public CommentReportMappingProfile() {
-            CreateMap<CommentReport, CommentReportResponse>()
+            CreateMap<CommentReport, CommentReportResponseDto>()
                 .ForMember(dest => dest.ReasonName, opt => opt.MapFrom(cr => cr.Reason.Name))
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(cr => cr.User.Login));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(cr => cr.User.UserName));
 
             CreateMap<CommentReportCreateDto, CommentReport>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())

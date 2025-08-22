@@ -2,7 +2,7 @@
 
 namespace BlogApi.DTOs.CommentReport
 {
-    public class CommentReportResponse
+    public class CommentReportResponseDto
     {
         public int Id { get; set; }
         public int UserId { get; set; }

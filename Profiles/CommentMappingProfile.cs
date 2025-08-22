@@ -9,7 +9,7 @@ namespace BlogApi.Profiles
         public CommentMappingProfile() {
             CreateMap<Comment, CommentResponseDto>()
                 .ForMember(dest => dest.PostTitle, opt => opt.MapFrom(c => c.Post != null ? c.Post.Title : "Undefined"))
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(c => c.User != null ? c.User.Login : "Undefined"))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(c => c.User != null ? c.User.UserName : "Undefined"))
                 .ForMember(dest => dest.CommentReportsCount, opt => opt.MapFrom(c => c.CommentReports != null ? c.CommentReports.Count : 0))
                 .ForMember(dest => dest.CommentReportsIds, opt => opt.MapFrom(c => c.CommentReports != null ? c.CommentReports.Select(cr => cr.Id).ToList() : new List<int>()));
 

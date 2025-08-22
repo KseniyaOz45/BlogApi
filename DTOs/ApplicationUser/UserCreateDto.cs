@@ -4,11 +4,11 @@ namespace BlogApi.DTOs.User
 {
     public class UserCreateDto
     {
-        [Required(ErrorMessage = "Login is required")]
+        [Required(ErrorMessage = "UserName is required")]
         [StringLength(50)]
-        [MinLength(2, ErrorMessage = "Login must be at least 2 characters long")]
-        [RegularExpression(@"\S+", ErrorMessage = "Login cannot be only whitespace")]
-        public string Login { get; set; } = string.Empty;
+        [MinLength(2, ErrorMessage = "UserName must be at least 2 characters long")]
+        [RegularExpression(@"\S+", ErrorMessage = "UserName cannot be only whitespace")]
+        public string UserName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Email is required")]
         [DataType(DataType.EmailAddress)]

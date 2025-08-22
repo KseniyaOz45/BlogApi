@@ -26,7 +26,7 @@ namespace BlogApi.Repositories
                 .Include(cr => cr.User)
                 .Include(cr => cr.Comment)
                 .Include(cr => cr.Reason)
-                .Where(cr => cr.User.Login == userLogin).ToListAsync();
+                .Where(cr => cr.User.UserName == userLogin).ToListAsync();
         }
 
         public async Task<CommentReport?> GetReportByCommentAndUserAsync(int commentId, string userLogin)
@@ -35,7 +35,7 @@ namespace BlogApi.Repositories
                 .Include(cr => cr.User)
                 .Include(cr => cr.Comment)
                 .Include(cr => cr.Reason)
-                .FirstOrDefaultAsync(cr => cr.CommentId == commentId && cr.User.Login == userLogin);
+                .FirstOrDefaultAsync(cr => cr.CommentId == commentId && cr.User.UserName == userLogin);
         }
 
         public async Task<IEnumerable<CommentReport>> GetReportsByReasonSlugAsync(string reasonSlug)

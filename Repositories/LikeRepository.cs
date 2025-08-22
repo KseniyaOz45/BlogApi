@@ -16,7 +16,7 @@ namespace BlogApi.Repositories
             return await _dbSet
                 .Include(l => l.User)
                 .Include(l => l.Post)
-                .FirstOrDefaultAsync(l => l.User.Login == userLogin && l.Post.Slug == postSlug);
+                .FirstOrDefaultAsync(l => l.User.UserName == userLogin && l.Post.Slug == postSlug);
         }
 
         public async Task<IEnumerable<Like>> GetLikesByPostAsync(string postSlug)

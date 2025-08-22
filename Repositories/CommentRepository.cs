@@ -23,7 +23,7 @@ namespace BlogApi.Repositories
             return await _dbSet
                 .Include(c => c.Post)
                 .Include(c => c.User)
-                .Where(c => c.User.Login == userLogin)
+                .Where(c => c.User.UserName == userLogin)
                 .ToListAsync();
         }
         
