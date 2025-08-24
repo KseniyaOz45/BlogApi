@@ -45,6 +45,7 @@ namespace BlogApi.Services
                 ?? throw new ArgumentException($"Comment with id {commentId} does not exists.");
 
             _unitOfWork.Comments.DeleteAsync(comment);
+            _unitOfWork.SaveAsync();
             return true;
         }
 

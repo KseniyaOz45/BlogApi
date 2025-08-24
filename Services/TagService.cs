@@ -75,7 +75,8 @@ namespace BlogApi.Services
                 ?? throw new ArgumentException($"Tag with id {tagId} does not exists.");
 
             var tagWithEquelsName = await _unitOfWork.Tags.GetTagByNameAsync(tagUpdateDto.Name);
-            if (tagWithEquelsName != null) throw new ArgumentException($"Tag with name {tagUpdateDto.Name} already exists.");
+            if (tagWithEquelsName != null && tagWithEquelsName.Id != tagId)
+                throw new ArgumentException($"Tag with name {tagUpdateDto.Name} already exists.");
 
             existingTag.Name = tagUpdateDto.Name ?? existingTag.Name;
             existingTag.Slug = _slugHelper.GenerateSlug(tagUpdateDto.Name ?? existingTag.Name);

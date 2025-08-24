@@ -44,8 +44,6 @@ builder.Services.AddAutoMapper(
 
 // Контроллеры + Swagger
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 // Подключаем Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
@@ -97,16 +95,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Глобальная обработка ошибок
+app.UseErrorHandling();
+
 app.UseHttpsRedirection();
 
 // Поддержка статических файлов(для картинок)
 app.UseStaticFiles();
 
-// Авторизация (пока не используем, но пусть стоит)
+// Авторизация
+app.UseAuthentication();
 app.UseAuthorization();
-
-// Глобальная обработка ошибок
-app.UseErrorHandling();
 
 // Подключение контроллеров
 app.MapControllers();

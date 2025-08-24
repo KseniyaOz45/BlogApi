@@ -11,9 +11,9 @@ namespace BlogApi.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly SlugHelper _slugHelper;
+        private readonly ISlugHelper _slugHelper;
 
-        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper, SlugHelper slugHelper)
+        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper, ISlugHelper slugHelper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -22,8 +22,9 @@ namespace BlogApi.Services
 
         public async Task<CategoryResponseDto> CreateCategoryAsync(CategoryCreateDto categoryCreateDto)
         {
-            var existsCategory = await _unitOfWork.Categories.GetCategoryByNameAsync(categoryCreateDto.Name)
-                ?? throw new ArgumentException($"Category with name {categoryCreateDto.Name} already exists.");
+            var existsCategory = await _unitOfWork.Categories.GetCategoryByNameAsync(categoryCreateDto.Name);
+            if (existsCategory != null)
+                throw new ArgumentException($"Category with name {categoryCreateDto.Name} already exists.");
 
             var newCategory = new Category()
             {
@@ -105,7 +106,7 @@ namespace BlogApi.Services
             _unitOfWork.Categories.UpdateAsync(existsCategory);
             await _unitOfWork.SaveAsync();
 
-            var response = _mapper.Map<CategoryResponseDto>(categoryUpdateDto);
+            var response = _mapper.Map<CategoryResponseDto>(existsCategory);
             return response;
         }
     }

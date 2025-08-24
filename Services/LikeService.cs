@@ -28,6 +28,10 @@ namespace BlogApi.Services
             var post = await _unitOfWork.Posts.GetByIdAsync(likeCreateDto.PostId)
                 ?? throw new ArgumentException($"Post with id {likeCreateDto.PostId} does not exists.");
 
+            var existingLike = await _unitOfWork.Likes.GetLikeByUserAndPostAsync(user.UserName, post.Slug);
+            if (existingLike != null)
+                throw new InvalidOperationException("User has already liked this post.");
+
             var newLike = new Like
             {
                 PostId = likeCreateDto.PostId,
@@ -43,7 +47,7 @@ namespace BlogApi.Services
         public async Task<bool> DeleteLike(int likeId)
         {
             var like = await _unitOfWork.Likes.GetByIdAsync(likeId)
-                ?? throw new ArgumentException($"Like witj id {likeId} does not exists.");
+                ?? throw new ArgumentException($"Like with id {likeId} does not exists.");
 
             _unitOfWork.Likes.DeleteAsync(like);
             await _unitOfWork.SaveAsync();

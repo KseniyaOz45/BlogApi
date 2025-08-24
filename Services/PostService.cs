@@ -17,12 +17,13 @@ namespace BlogApi.Services
         private readonly SlugHelper _slugHelper;
         private readonly IWebHostEnvironment _env;
 
-        public PostService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, SlugHelper slugHelper)
+        public PostService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, SlugHelper slugHelper, IWebHostEnvironment env)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _slugHelper = slugHelper;
+            _env = env;
         }
 
         public async Task<PostResponseDto> CreatePost(int userId, PostCreateDto postCreateDto)

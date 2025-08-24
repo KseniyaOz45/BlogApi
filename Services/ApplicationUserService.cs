@@ -38,8 +38,7 @@ namespace BlogApi.Services
             var existingUser = await _userManager.FindByIdAsync(userId.ToString())
                 ?? throw new ArgumentException($"User with id {userId} does not exists.");
 
-            await _userManager.DeleteAsync(existingUser);
-            return IdentityResult.Success;
+            return await _userManager.DeleteAsync(existingUser);
         }
 
         public async Task<IEnumerable<UserResponseDto>> GetAllUsers()
@@ -75,8 +74,9 @@ namespace BlogApi.Services
 
         public async Task<UserResponseDto?> GetUserBySlug(string userSlug)
         {
-            var existingUser = await _userManager.Users.FirstAsync(x => x.Slug == userSlug)
-                ?? throw new ArgumentException($"User with slug {userSlug} does not exists.");
+            var existingUser = await _userManager.Users
+                .FirstOrDefaultAsync(x => x.Slug == userSlug)
+                ?? throw new ArgumentException($"User with slug {userSlug} does not exist.");
 
             return _mapper.Map<UserResponseDto?>(existingUser);
 
@@ -106,6 +106,7 @@ namespace BlogApi.Services
         public async Task<IdentityResult> RegisterUser(UserCreateDto userCreateDto)
         {
             var user = _mapper.Map<ApplicationUser>(userCreateDto);
+            user.Slug = _slugHelper.GenerateSlug(userCreateDto.UserName);
             return await _userManager.CreateAsync(user, userCreateDto.Password);
         }
 
@@ -115,6 +116,12 @@ namespace BlogApi.Services
             if (user == null) return IdentityResult.Failed(new IdentityError { Description = "User not found" });
 
             _mapper.Map(userUpdateDto, user);
+
+            if (!string.IsNullOrWhiteSpace(userUpdateDto.UserName))
+            {
+                user.Slug = _slugHelper.GenerateSlug(userUpdateDto.UserName);
+            }
+
             return await _userManager.UpdateAsync(user);
         }
     }

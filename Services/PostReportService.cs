@@ -60,7 +60,7 @@ namespace BlogApi.Services
 
         public async Task<IEnumerable<PostReportResponseDto>> GetPostReportsByDate(DateTime date)
         {
-            return _mapper.Map<IEnumerable<PostReportResponseDto>>((await _unitOfWork.PostReports.GetAllAsync()).Where(pr => pr.CreatedAt == date));
+            return _mapper.Map<IEnumerable<PostReportResponseDto>>((await _unitOfWork.PostReports.GetAllAsync()).Where(pr => pr.CreatedAt >= date));
         }
 
         public async Task<IEnumerable<PostReportResponseDto>> GetPostReportsByPostId(int postId)

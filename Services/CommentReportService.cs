@@ -49,6 +49,7 @@ namespace BlogApi.Services
                 ?? throw new ArgumentException($"Comment report with id {reportId} does not exists."); ;
 
             _unitOfWork.CommentReports.DeleteAsync(commentReport);
+            await _unitOfWork.SaveAsync();
             return true;
         }
 
@@ -109,7 +110,8 @@ namespace BlogApi.Services
             var user = await _userManager.FindByNameAsync(userLogin)
                 ?? throw new ArgumentException($"User with login {userLogin} does not exists.");
 
-            var commentReports = (await _unitOfWork.Comments.GetAllAsync()).Where(cr => cr.UserId == user.Id && cr.CreatedAt.Date == dateTime.Date);
+            var commentReports = (await _unitOfWork.CommentReports.GetAllAsync())
+                .Where(cr => cr.UserId == user.Id && cr.CreatedAt.Date == dateTime.Date);
             return _mapper.Map<IEnumerable<CommentReportResponseDto>>(commentReports);
         }
 
@@ -118,7 +120,7 @@ namespace BlogApi.Services
             var user = await _userManager.FindByNameAsync(userLogin)
                 ?? throw new ArgumentException($"User with login {userLogin} does not exists.");
 
-            var commentReports = await _unitOfWork.Comments.GetCommentsByUserLoginAsync(userLogin);
+            var commentReports = await _unitOfWork.CommentReports.GetReportsByUserLoginAsync(userLogin);
             return _mapper.Map<IEnumerable<CommentReportResponseDto>>(commentReports);
         }
 
