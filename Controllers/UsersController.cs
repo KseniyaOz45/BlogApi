@@ -2,6 +2,7 @@
 using BlogApi.DTOs.User;
 using BlogApi.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -30,22 +31,22 @@ namespace BlogApi.Controllers
             return Ok(user);
         }
 
-        [HttpGet("{userSlug:string}")]
+        [HttpGet("by-slug/{userSlug}")]
         public async Task<IActionResult> GetUserBySlug(string userSlug) {
             var user = await _userService.GetUserBySlug(userSlug);
             return Ok(user);
         }
 
-        [HttpGet("by-email/{userEmail:string}")]
+        [HttpGet("by-email/{userEmail}")]
         public async Task<IActionResult> GetUserByEmail(string userEmail) {
             var user = await _userService.GetUserByEmail(userEmail);
             return Ok(user);
         }
 
-        [HttpGet("by-name/{userName:string}")]
+        [HttpGet("by-name/{userName}")]
         public async Task<IActionResult> GetUserByUsername(string userName) {
             var user = await _userService.GetUserByLogin(userName);
-            return Ok(user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
         [HttpPost("register")]
@@ -67,7 +68,7 @@ namespace BlogApi.Controllers
         }
 
         [HttpPut("change-password")]
-        public async Task<IActionResult> ChangePassword([FromForm] UserPasswordChangeDto userPasswordChangeDto) {
+        public async Task<IActionResult> ChangePassword([FromBody] UserPasswordChangeDto userPasswordChangeDto) {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
@@ -79,7 +80,7 @@ namespace BlogApi.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateUser([FromForm] UserUpdateDto userUpdateDto) {
+        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDto userUpdateDto) {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
@@ -87,13 +88,13 @@ namespace BlogApi.Controllers
             }
 
             var result = await _userService.UpdateUser(int.Parse(userId), userUpdateDto);
-            return Ok(result);
+            return NoContent();
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUser(int id) {
             var result = await _userService.DeleteUser(id);
-            return Ok(result);
+            return NoContent();
         }
     }
 }

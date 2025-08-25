@@ -26,26 +26,26 @@ namespace BlogApi.Controllers
             return Ok(category);
         }
 
-        [HttpGet("by-slug/{slug:string}")]
+        [HttpGet("by-slug/{slug}")]
         public async Task<IActionResult> GetCategoryBySlug(string slug) {
             var category = await _categoryService.GetCategoryBySlugAsync(slug);
             return Ok(category);
         }
 
-        [HttpGet("by-name/{name:string}")]
+        [HttpGet("by-name/{name}")]
         public async Task<IActionResult> GetCategoryByName(string name) {
             var category = await _categoryService.GetCategoryByNameAsync(name);
             return Ok(category);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromForm] CategoryCreateDto categoryCreateDto) {
+        public async Task<IActionResult> CreateCategory([FromBody] CategoryCreateDto categoryCreateDto) {
             var result = await _categoryService.CreateCategoryAsync(categoryCreateDto);
             return Ok(result);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromForm] CategoryUpdateDto categoryUpdateDto) {
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryUpdateDto categoryUpdateDto) {
             var result = await _categoryService.UpdateCategoryAsync(id, categoryUpdateDto);
             return Ok(result);
         }
@@ -56,13 +56,13 @@ namespace BlogApi.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("by-name/{name:string}")]
+        [HttpDelete("by-name/{name}")]
         public async Task<IActionResult> DeleteCategoryByName(string name) {
             var result = await _categoryService.DeleteCategoryByNameAsync(name);
             return Ok(result);
         }
 
-        [HttpDelete("by-slug/{slug:string}")]
+        [HttpDelete("by-slug/{slug}")]
         public async Task<IActionResult> DeleteCategoryBySlug(string slug) {
             var result = await _categoryService.DeleteCategoryBySlugAsync(slug);
             return Ok(result);

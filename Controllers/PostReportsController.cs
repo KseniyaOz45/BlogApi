@@ -60,7 +60,7 @@ namespace BlogApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePostReport([FromForm] PostReportCreateDto postReportCreateDto) {
+        public async Task<IActionResult> CreatePostReport([FromBody] PostReportCreateDto postReportCreateDto) {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
@@ -68,7 +68,7 @@ namespace BlogApi.Controllers
             }
 
             var result = await _postReportService.CreatePostReport(int.Parse(userId), postReportCreateDto);
-            return Ok(result);
+            return CreatedAtAction(nameof(GetAllPostReports), new { id = result.Id }, result);
         }
 
         [HttpDelete("{id:int}")]

@@ -34,7 +34,7 @@ namespace BlogApi.Controllers
             return Ok(posts);
         }
 
-        [HttpGet("by-user-name/{userName:string}")]
+        [HttpGet("by-user-name/{userName}")]
         public async Task<IActionResult> GetPostsByUserUsename(string userName) {
             var posts = await _postService.GetPostsByUserName(userName);
             return Ok(posts);
@@ -46,7 +46,7 @@ namespace BlogApi.Controllers
             return Ok(posts);
         }
 
-        [HttpGet("by-user-name/{userName:string}/drafts")]
+        [HttpGet("by-user-name/{userName}/drafts")]
         public async Task<IActionResult> GetPostsDraftsByUserName(string userName) {
             var posts = await _postService.GetPostsDraftsByUserName(userName);
             return Ok(posts);
@@ -64,7 +64,7 @@ namespace BlogApi.Controllers
             return Ok(posts);
         }
 
-        [HttpGet("by-category-name/{categoryName:string}")]
+        [HttpGet("by-category-name/{categoryName}")]
         public async Task<IActionResult> GetPostsByCategoryName([FromQuery] string categoryName) {
             var posts = await _postService.GetPostsByCategoryName(categoryName);
             return Ok(posts);
@@ -76,7 +76,7 @@ namespace BlogApi.Controllers
             return Ok(posts);
         }
 
-        [HttpGet("by-title/{title:string}")]
+        [HttpGet("by-title/{title}")]
         public async Task<IActionResult> GetPostsByTitle([FromQuery] string title) {
             var posts = await _postService.GetPostsByTitle(title);
             return Ok(posts);
@@ -88,13 +88,13 @@ namespace BlogApi.Controllers
             return Ok(post);
         }
 
-        [HttpGet("by-slug/{postSlug:string}")]
+        [HttpGet("by-slug/{postSlug}")]
         public async Task<IActionResult> GetPostBySlug(string postSlug) {
             var post = await _postService.GetPostBySlug(postSlug);
             return Ok(post);
         }
 
-        [HttpPut("{postSlug:string}/view")]
+        [HttpPut("{postSlug}/view")]
         public async Task<IActionResult> ViewPost(string postSlug) {
             var post = await _postService.ViewPost(postSlug);
             return Ok(post);

@@ -18,7 +18,7 @@ namespace BlogApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCommets() {
+        public async Task<IActionResult> GetAllComments() {
             var comments = await _commentService.GetAllComments();
             return Ok(comments);
         }
@@ -36,7 +36,7 @@ namespace BlogApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateComment([FromForm] CommentCreateDto commentCreateDto) {
+        public async Task<IActionResult> CreateComment([FromBody] CommentCreateDto commentCreateDto) {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {

@@ -28,28 +28,28 @@ namespace BlogApi.Controllers
             return Ok(tag);
         }
 
-        [HttpGet("by-slug/{tagSlug:string}")]
+        [HttpGet("by-slug/{tagSlug}")]
         public async Task<IActionResult> GetTagBySlug(string tagSlug) {
             var tag = await _tagService.GetTagBySlug(tagSlug);
             return Ok(tag);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTag([FromForm] TagCreateDto tagCreateDto) {
+        public async Task<IActionResult> CreateTag([FromBody] TagCreateDto tagCreateDto) {
             var result = await _tagService.CreateTag(tagCreateDto);
-            return Ok(result);
+            return CreatedAtAction(nameof(GetTagById), new { id = result.Id }, result);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateTag(int id, [FromForm] TagUpdateDto tagUpdateDto) {
+        public async Task<IActionResult> UpdateTag(int id, [FromBody] TagUpdateDto tagUpdateDto) {
             var result = await _tagService.UpdateTag(id, tagUpdateDto);
-            return Ok(result);
+            return NoContent();
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteTag(int id) {
             var result = await _tagService.DeleteTag(id);
-            return Ok(result);
+            return NoContent();
         }
     }
 }
